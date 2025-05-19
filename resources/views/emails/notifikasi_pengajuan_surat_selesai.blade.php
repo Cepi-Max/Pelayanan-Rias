@@ -68,8 +68,7 @@
 
         <a href="{{ $link }}" class="button">Download Surat PDF</a>
 
-        <p style="margin-top: 20px;">Jika tombol di atas tidak berfungsi, salin dan tempelkan tautan berikut di browser Anda:</p>
-        <p><a href="{{ $link }}">Download Surat</a></p>
+        <p style="margin-top: 20px;">Jika tombol di atas tidak berfungsi, anda bisa mendownloadnya di menu riwayat di bagian menu atas website pelayanan administrasi desa rias.</p>
     </div>
 
     <!-- Footer -->
