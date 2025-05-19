@@ -22,7 +22,7 @@
                             <td class="px-4 py-2">{{ $item->pengajuan->jenisSurat->nama_jenis ?? '-' }}</td>
                             <td class="px-4 py-2">{{ $item->surat_diminta }}</td>
                             <td class="px-4 py-2 text-center">
-                                <a href="{{ asset('storage/surat/' . $item->surat_diminta) }}" target="_blank"
+                                <a href="{{ route('download-pdf', $item->id) }}" target="_blank"
                                    class="text-blue-600 hover:underline">Lihat Surat</a>
                             </td>
                         </tr>
