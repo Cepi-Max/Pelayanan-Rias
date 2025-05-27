@@ -23,13 +23,16 @@
                         Dashboard
                     </a>
                 </li>
-                <li class="mb-1">
-                    <a href="{{ route('admin.pengguna.index') }}"
-                        class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 {{ request()->routeIs('admin.pengguna.*') ? 'bg-gray-100 text-gray-900' : '' }}">
-                        <span class="material-icons mr-3 text-gray-500 text-base">group</span>
-                        User Management
-                    </a>
-                </li>
+
+                @if(Auth::user() && Auth::user()->role === 'admin')
+                    <li class="mb-1">
+                        <a href="{{ route('admin.pengguna.index') }}"
+                            class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 {{ request()->routeIs('admin.pengguna.*') ? 'bg-gray-100 text-gray-900' : '' }}">
+                            <span class="material-icons mr-3 text-gray-500 text-base">group</span>
+                            User Management
+                        </a>
+                    </li>
+                @endif
             </ul>
         </div>
 
