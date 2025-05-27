@@ -108,7 +108,7 @@ class AntrianSuratController extends Controller
 
         $judul = 'Surat Selesai';
         $pesan = 'Silahkan buka link untuk mendownload surat anda';
-        $link = 'http://127.0.0.1:8000/storage/dokumen/surat-selesai/' . $fileName;
+        $link = 'https://pelayanan-surat.pemdesrias.com/public/storage/dokumen/surat-selesai/' . $fileName;
 
         Mail::to($pengajuan->user->email)->send(new NotifikasiPengajuanSuratSelesai($judul, $pesan, $link));
 

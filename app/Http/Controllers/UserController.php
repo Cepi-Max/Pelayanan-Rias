@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JenisSurat;
 use App\Models\PengajuanSelesai;
 use App\Models\PengajuanSurat;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -45,5 +46,19 @@ class UserController extends Controller
         ];
 
         return view('riwayat-pengajuan.index', $data);
+    }
+
+    function downloadSurat($id)
+    {
+        // dd($id);
+        $surat = PengajuanSelesai::findOrFail($id);
+        $fileName = $surat->surat_diminta;
+        $filePath = 'dokumen/surat-selesai/' . $fileName;
+
+        if (!Storage::disk('public')->exists($filePath)) {
+            return back()->with('error', 'File surat belum tersedia.');
+        }
+        
+        return Storage::disk('public')->download($filePath, $fileName);
     }
 }
