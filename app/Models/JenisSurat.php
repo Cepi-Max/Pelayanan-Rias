@@ -12,7 +12,7 @@ class JenisSurat extends Model
     protected $casts = [
         'form_fields' => 'array',
     ];
-    protected $fillable = ['nama_jenis', 'deskripsi', 'form_fields'];
+    protected $fillable = ['slug', 'nama_jenis', 'deskripsi', 'form_fields'];
 
     // public function pengajuan()
     // {

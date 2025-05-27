@@ -29,7 +29,7 @@ class JenisSuratController extends Controller
             'title' => $jenisSurat ? 'Form Ubah Jenis Surat' : 'Form Tambah Jenis Surat',
             'jenisSurat' => $jenisSurat
         ];
-        
+
         return view('admin.jenis-surat.form', $data);
     }
 
@@ -41,7 +41,7 @@ class JenisSuratController extends Controller
             'form_fields' => 'required|json', // pastikan valid JSON
         ]);
 
-        if($id){
+        if ($id) {
             $slug = Str::slug($request->input('nama_jenis'));
         } else {
             $slug = Str::slug($request->input('nama_jenis'));
@@ -50,7 +50,7 @@ class JenisSuratController extends Controller
                 $slug .= '-' . ($existingSlugCount + 1);
             }
         }
-
+        // dd($slug);
         $data = [
             'slug' => $slug,
             'nama_jenis' => $validated['nama_jenis'],
@@ -72,6 +72,4 @@ class JenisSuratController extends Controller
         JenisSurat::findOrFail($id)->delete();
         return redirect()->route('admin.jenis-surat.index')->with('success', 'Data berhasil dihapus.');
     }
-
-
 }

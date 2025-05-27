@@ -1,41 +1,98 @@
-<aside class="w-64 bg-white shadow-md min-h-screen fixed top-16 left-0 bottom-0 z-20">
-      <nav class="mt-6">
-        <ul>
-          <li>
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-9 14V9m0 0L5 12m14-2v8a2 2 0 01-2 2h-4m0-8h4" />
-              </svg>
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="{{ route('admin.pengguna.index') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 transition mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20h6m-6 0a4 4 0 01-4-4v-1a4 4 0 014-4m6 0a4 4 0 014 4v1a4 4 0 01-4 4m-6 0v1" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12a4 4 0 100-8 4 4 0 000 8z" />
-              </svg>
-              User Management
-            </a>
-          </li>
-          <li>
-            <a href="{{ route('admin.jenis-surat.index') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 transition mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20h6m-6 0a4 4 0 01-4-4v-1a4 4 0 014-4m6 0a4 4 0 014 4v1a4 4 0 01-4 4m-6 0v1" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12a4 4 0 100-8 4 4 0 000 8z" />
-              </svg>
-              Jenis Surat
-            </a>
-          </li>
-          <li>
-            <a href="{{ route('admin.antrian.index') }}" class="flex items-center px-6 py-3 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700 transition mt-1">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20h6m-6 0a4 4 0 01-4-4v-1a4 4 0 014-4m6 0a4 4 0 014 4v1a4 4 0 01-4 4m-6 0v1" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12a4 4 0 100-8 4 4 0 000 8z" />
-              </svg>
-              Antrian
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </aside>
+<aside
+    class="w-64 bg-white border-r border-gray-200 min-h-screen fixed top-16 left-0 bottom-0 z-20 transition-all duration-300">
+    <!-- Sidebar Header -->
+    <div class="px-4 py-5 border-b border-gray-100">
+        <div class="flex items-center">
+            <div class="w-8 h-8 bg-gray-100 rounded-md flex items-center justify-center text-gray-500">
+                <span class="material-icons text-sm">admin_panel_settings</span>
+            </div>
+            <h2 class="ml-3 text-sm font-medium text-gray-700">Admin Panel</h2>
+        </div>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="px-2 py-3">
+        <!-- Main Navigation Section -->
+        <div class="mb-1">
+            <p class="px-3 text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Menu Utama</p>
+            <ul>
+                <li class="mb-1">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 {{ request()->routeIs('admin.dashboard') ? 'bg-gray-100 text-gray-900' : '' }}">
+                        <span class="material-icons mr-3 text-gray-500 text-base">dashboard</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('admin.pengguna.index') }}"
+                        class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 {{ request()->routeIs('admin.pengguna.*') ? 'bg-gray-100 text-gray-900' : '' }}">
+                        <span class="material-icons mr-3 text-gray-500 text-base">group</span>
+                        User Management
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Surat Section -->
+        <div class="mt-6 mb-1">
+            <p class="px-3 text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Manajemen Surat</p>
+            <ul>
+                <li class="mb-1">
+                    <a href="{{ route('admin.jenis-surat.index') }}"
+                        class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 {{ request()->routeIs('admin.jenis-surat.*') ? 'bg-gray-100 text-gray-900' : '' }}">
+                        <span class="material-icons mr-3 text-gray-500 text-base">description</span>
+                        Jenis Surat
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('admin.antrian.index') }}"
+                        class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 {{ request()->routeIs('admin.antrian.*') ? 'bg-gray-100 text-gray-900' : '' }}">
+                        <span class="material-icons mr-3 text-gray-500 text-base">schedule</span>
+                        Antrian
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="mt-6 mb-1">
+            <p class="px-3 text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Pengaturan</p>
+            <ul>
+                <li class="mb-1">
+                    <a href="#"
+                        class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                        <span class="material-icons mr-3 text-gray-500 text-base">settings</span>
+                        Konfigurasi
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="#"
+                        class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
+                        <span class="material-icons mr-3 text-gray-500 text-base">help_outline</span>
+                        Bantuan
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="absolute bottom-0 left-0 right-0 border-t border-gray-100">
+        <div class="px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-gray-500">
+                        <span class="material-icons text-sm">person</span>
+                    </div>
+                    <div class="ml-2">
+                        <p class="text-xs font-medium text-gray-900">Admin User</p>
+                        <p class="text-xs text-gray-500">admin@example.com</p>
+                    </div>
+                </div>
+                <button class="text-gray-400 hover:text-gray-600">
+                    <span class="material-icons text-base">logout</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</aside>
