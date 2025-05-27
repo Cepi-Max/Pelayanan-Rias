@@ -12,11 +12,6 @@ use App\Mail\NotifikasiPengajuanSurat;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
-
-
-
-
-
 Route::get('/tes-email', function () {
     $judul = 'Testing Email';
     $pesan = 'Ini isi email testing dari Laravel';
@@ -66,7 +61,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 // // ================== OPERATOR ==================
-Route::middleware(['auth', 'role:operator'])->prefix('operator')->name('operator.')->group(function () {
+Route::middleware(['auth', 'role:operator'])->prefix('operator')->name('admin.')->group(function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
      // Operator Jenis Surat
     Route::get('/jenis-surat', [JenisSuratController::class, 'index'])->name('jenis-surat.index');
     Route::get('/jenis-surat/form/{id?}', [JenisSuratController::class, 'form'])->name('jenis-surat.form');
@@ -83,7 +79,7 @@ Route::middleware(['auth', 'role:operator'])->prefix('operator')->name('operator
 });
 
 // ================== USER ==================
-Route::middleware(['auth', 'role:user'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     // Route::get('/', [PengajuanSuratController::class, 'beranda'])->name('user.beranda');
 
     // Pilih Surat
