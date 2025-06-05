@@ -28,28 +28,27 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    });
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // ================== ADMIN ==================
-    Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-        // Admin Jenis Surat
-        Route::get('/jenis-surat', [JenisSuratController::class, 'index'])->name('jenis-surat.index');
-        Route::get('/jenis-surat/form/{id?}', [JenisSuratController::class, 'form'])->name('jenis-surat.form');
-        Route::post('/jenis-surat/store', [JenisSuratController::class, 'storeOrUpdate'])->name('jenis-surat.store');
-        Route::put('/jenis-surat/update/{id}', [JenisSuratController::class, 'storeOrUpdate'])->name('jenis-surat.update');
-        Route::delete('/jenis-surat/delete/{id}', [JenisSuratController::class, 'destroy'])->name('jenis-surat.destroy');
+        // // Admin Jenis Surat
+        // Route::get('/jenis-surat', [JenisSuratController::class, 'index'])->name('jenis-surat.index');
+        // Route::get('/jenis-surat/form/{id?}', [JenisSuratController::class, 'form'])->name('jenis-surat.form');
+        // Route::post('/jenis-surat/store', [JenisSuratController::class, 'storeOrUpdate'])->name('jenis-surat.store');
+        // Route::put('/jenis-surat/update/{id}', [JenisSuratController::class, 'storeOrUpdate'])->name('jenis-surat.update');
+        // Route::delete('/jenis-surat/delete/{id}', [JenisSuratController::class, 'destroy'])->name('jenis-surat.destroy');
         
-        // Admin Antrian Pengajuan
-        Route::get('/antrian-pengajuan-surat', [AntrianSuratController::class, 'index'])->name('antrian.index');
-        Route::get('/antrian-pengajuan-surat/{id}', [AntrianSuratController::class, 'show'])->name('antrian.show');
-        Route::post('/antrian-pengajuan-surat/{id}/update-status', [AntrianSuratController::class, 'updateStatus'])->name('antrian.updateStatus');
-        Route::post('/antrian-pengajuan-surat/{id}/surat-selesai', [AntrianSuratController::class, 'kirimPdf'])->name('antrian.surat-selesai');
+        // // Admin Antrian Pengajuan
+        // Route::get('/antrian-pengajuan-surat', [AntrianSuratController::class, 'index'])->name('antrian.index');
+        // Route::get('/antrian-pengajuan-surat/{id}', [AntrianSuratController::class, 'show'])->name('antrian.show');
+        // Route::post('/antrian-pengajuan-surat/{id}/update-status', [AntrianSuratController::class, 'updateStatus'])->name('antrian.updateStatus');
+        // Route::post('/antrian-pengajuan-surat/{id}/surat-selesai', [AntrianSuratController::class, 'kirimPdf'])->name('antrian.surat-selesai');
         
         // Admin User Management
         Route::get('/pengaturan-pengguna', [UserManagementController::class, 'index'])->name('pengguna.index');
@@ -62,7 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // // ================== OPERATOR ==================
-    Route::middleware(['auth', 'role:admin,operator'])->prefix('operator')->name('admin.')->group(function () {
+    Route::middleware(['role:admin,operator'])->prefix('operator')->name('admin.')->group(function () {
         Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
         // Operator Jenis Surat
         Route::get('/jenis-surat', [JenisSuratController::class, 'index'])->name('jenis-surat.index');
@@ -80,7 +79,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // ================== USER ==================
-    Route::middleware(['auth'])->group(function () {
+    Route::middleware(['role:user,admin,operator'])->group(function () {
         // Route::get('/', [PengajuanSuratController::class, 'beranda'])->name('user.beranda');
 
         // Pilih Surat
