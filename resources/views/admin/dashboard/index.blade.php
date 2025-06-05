@@ -24,7 +24,7 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-sm font-medium text-gray-500">Total Pengguna</p>
-                        <h2 class="mt-2 text-3xl font-semibold text-gray-800">1,245</h2>
+                        <h2 class="mt-2 text-3xl font-semibold text-gray-800">{{ $user }}</h2>
                         <p class="mt-1 text-sm text-green-600 flex items-center">
                             <span class="material-icons text-sm mr-1">arrow_upward</span>
                             <span>12% dibanding bulan lalu</span>
@@ -47,8 +47,8 @@
             <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-sm font-medium text-gray-500">Penjualan Hari Ini</p>
-                        <h2 class="mt-2 text-3xl font-semibold text-gray-800">Rp 4.200.000</h2>
+                        <p class="text-sm font-medium text-gray-500">Pengajuan Hari Ini</p>
+                        <h2 class="mt-2 text-3xl font-semibold text-gray-800">{{ $totalHariIni }}</h2>
                         <p class="mt-1 text-sm text-green-600 flex items-center">
                             <span class="material-icons text-sm mr-1">arrow_upward</span>
                             <span>8% dibanding kemarin</span>
@@ -59,8 +59,8 @@
                     </div>
                 </div>
                 <div class="mt-4 pt-4 border-t border-gray-100">
-                    <a href="#" class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center">
-                        Lihat laporan
+                    <a href="{{ route('admin.antrian.index') }}" class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                        Lihat detail
                         <span class="material-icons text-sm ml-1">chevron_right</span>
                     </a>
                 </div>
@@ -70,8 +70,8 @@
             <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-sm font-medium text-gray-500">Pesanan Baru</p>
-                        <h2 class="mt-2 text-3xl font-semibold text-gray-800">23</h2>
+                        <p class="text-sm font-medium text-gray-500">Pengajuan Bulan Ini</p>
+                        <h2 class="mt-2 text-3xl font-semibold text-gray-800">{{ $totalBulanIni }}</h2>
                         <p class="mt-1 text-sm text-yellow-600 flex items-center">
                             <span class="material-icons text-sm mr-1">pending</span>
                             <span>Memerlukan perhatian</span>
@@ -82,8 +82,8 @@
                     </div>
                 </div>
                 <div class="mt-4 pt-4 border-t border-gray-100">
-                    <a href="#" class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center">
-                        Proses pesanan
+                    <a href="{{ route('admin.antrian.index') }}" class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center">
+                        Lihat detail
                         <span class="material-icons text-sm ml-1">chevron_right</span>
                     </a>
                 </div>
@@ -95,46 +95,27 @@
             <!-- Recent Activity -->
             <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-100 p-6">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-lg font-medium text-gray-700">Aktivitas Terbaru</h3>
+                    <h3 class="text-lg font-medium text-gray-700">Permintaan Terbaru</h3>
                     <button class="text-sm text-gray-500 hover:text-gray-700">Lihat semua</button>
                 </div>
 
                 <div class="space-y-4">
-                    <!-- Activity Item 1 -->
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 flex-shrink-0">
-                            <span class="material-icons text-sm">person_add</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-800">Ahmad Kurniawan baru saja mendaftar sebagai pengguna baru</p>
-                            <p class="text-xs text-gray-500 mt-1">10 menit yang lalu</p>
-                        </div>
-                    </div>
+                    @foreach ($notifikasi as $notif)
+                        <!-- Activity Item 1 -->
+                        <a href="{{ route('antrian.show', $notif->data['pengajuan_id']) }}">
+                            <div class="flex items-start">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 flex-shrink-0">
+                                    <span class="material-icons text-sm">person_add</span>
+                                </div>
+                                <div class="ml-4">
+                                    <p class="text-sm text-gray-800">{{ $notif->data['user'] }} mengajukan surat {{ $notif->data['jenis_surat'] }}</p>
+                                    <p class="text-xs text-gray-500 mt-1">{{ $notif->created_at->diffForHumans() }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
 
-                    <!-- Activity Item 2 -->
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-500 flex-shrink-0">
-                            <span class="material-icons text-sm">shopping_bag</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-800">Pesanan #12345 telah selesai diproses</p>
-                            <p class="text-xs text-gray-500 mt-1">1 jam yang lalu</p>
-                        </div>
-                    </div>
-
-                    <!-- Activity Item 3 -->
-                    <div class="flex items-start">
-                        <div
-                            class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-500 flex-shrink-0">
-                            <span class="material-icons text-sm">sync</span>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-800">Sistem melakukan pembaruan otomatis stok produk</p>
-                            <p class="text-xs text-gray-500 mt-1">3 jam yang lalu</p>
-                        </div>
-                    </div>
                 </div>
             </div>
 

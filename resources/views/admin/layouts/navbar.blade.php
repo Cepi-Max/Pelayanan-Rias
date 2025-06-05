@@ -7,7 +7,17 @@
         </div>
 
         <!-- Profil / User -->
-        <div>
+        <div class="flex gap-6">
+            <a href="{{ route('admin.antrian.index') }}" class="relative inline-flex items-center">
+                <span>notif</span>
+
+                @if($notifikasiBaru > 0)
+                    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                        {{ $notifikasiBaru }}
+                    </span>
+                @endif
+            </a>
+
             <button
                 class="flex items-center space-x-2 text-gray-600 hover:text-indigo-600 transition duration-300 focus:outline-none">
 

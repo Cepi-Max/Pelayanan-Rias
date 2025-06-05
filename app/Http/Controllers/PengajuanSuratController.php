@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\JenisSurat;
 use App\Models\PengajuanSurat;
+use App\Models\User;
+use App\Notifications\PengajuanSuratBaru;
 use Illuminate\Http\Request;
 
 class PengajuanSuratController extends Controller
@@ -65,6 +67,14 @@ class PengajuanSuratController extends Controller
         $pengajuan->data_pengajuan = $dataPengajuan;
         $pengajuan->status = 'pending';
         $pengajuan->save();
+
+        // Cari semua operator
+        $operators = User::where('role', 'operator')->get();
+
+        // Kirim notifikasi ke semua operator
+        foreach ($operators as $operator) {
+            $operator->notify(new PengajuanSuratBaru($pengajuan));
+        }
         
         return redirect()->route('dashboard.index')
             ->with('success', 'Pengajuan surat berhasil dibuat.');
