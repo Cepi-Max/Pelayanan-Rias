@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <option value="text" ${field.type === 'text' ? 'selected' : ''}>Text</option>
                 <option value="file" ${field.type === 'file' ? 'selected' : ''}>File</option>
                 <option value="number" ${field.type === 'number' ? 'selected' : ''}>Number</option>
+                <option value="date" ${field.type === 'date' ? 'selected' : ''}>Date</option>
             </select>
             <button type="button" class="remove-field text-red-600 px-2">✖</button>
         `;
