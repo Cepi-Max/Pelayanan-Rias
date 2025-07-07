@@ -12,6 +12,8 @@ class PengajuanSelesai extends Model
     protected $table = 'pengajuan_selesai'; 
 
     protected $fillable = [
+        'nama',
+        'jenis_surat_id',
         'pengajuan_id',
         'surat_diminta',
     ];
@@ -22,5 +24,10 @@ class PengajuanSelesai extends Model
     public function pengajuan()
     {
         return $this->belongsTo(PengajuanSurat::class, 'pengajuan_id');
+    }
+
+    public function jenisSurat()
+    {
+        return $this->belongsTo(JenisSurat::class, 'jenis_surat_id');
     }
 }

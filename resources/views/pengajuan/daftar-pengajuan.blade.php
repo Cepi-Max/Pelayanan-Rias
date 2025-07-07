@@ -4,7 +4,7 @@
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2 mb-4 border-b border-gray-300 p-3">
                 <i class="fas fa-hourglass-half text-blue-500 text-2xl"></i>
-                Antrian Surat Anda
+                Pengajuan Surat Anda
             </h2>
 
             <div class="text-sm text-gray-500 flex items-center">
@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        @if ($antrian->isEmpty())
+        @if ($pengajuan->isEmpty())
             <div class="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
                 <div class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-gray-100 text-gray-500 mb-4">
                     <i class="far fa-folder-open"></i>
@@ -39,11 +39,14 @@
                                 <th scope="col"
                                     class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
                                     Status</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
+                                    Aksi</th>
 
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach ($antrian as $i => $item)
+                            @foreach ($pengajuan as $i => $item)
                                 <tr class="hover:bg-gray-50 transition-colors duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $i + 1 }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -107,14 +110,29 @@
                                                 </span>
                                         @endswitch
                                     </td>
-
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @switch($item->status)
+                                            @case('selesai')
+                                                <a href="{{ route('download-pdf', $item->id) }}" target="_blank"
+                                                class="inline-flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded transition-colors">
+                                                    <i class="fas fa-download mr-1"></i>
+                                                    Download Surat
+                                                </a>
+                                            @break
+                                            @default
+                                                <span
+                                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                    Belum Tersedia
+                                                </span>
+                                        @endswitch
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
 
-                @if ($antrian->count() > 5)
+                @if ($pengajuan->count() > 5)
                     <div class="px-6 py-3 bg-gray-50 border-t border-gray-200 text-right">
                         <a href="#" class="text-sm text-blue-600 hover:text-blue-800 font-medium">Lihat Semua</a>
                     </div>
@@ -122,7 +140,7 @@
             </div>
 
             <div class="mt-4 flex justify-between text-sm text-gray-500">
-                <div>Menampilkan {{ $antrian->count() }} dari {{ $antrian->count() }} pengajuan</div>
+                <div>Menampilkan {{ $pengajuan->count() }} dari {{ $pengajuan->count() }} pengajuan</div>
                 <div>Refresh untuk melihat status terbaru</div>
             </div>
         @endif

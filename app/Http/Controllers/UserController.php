@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\JenisSurat;
+use App\Models\Notifikasi;
 use App\Models\PengajuanSelesai;
 use App\Models\PengajuanSurat;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -18,31 +19,67 @@ class UserController extends Controller
         $userId = Auth::id();
         $pengajuan = PengajuanSurat::with('jenisSurat')
                     ->where('user_id', $userId)
-                    ->where('status', 'diproses')
+                    ->whereNot('status', 'ditolak')
                     ->latest()
                     ->get();
         $data = [
             'title' => 'Pengajuan Saya',
-            'antrian' => $pengajuan,
+            'pengajuan' => $pengajuan,
         ];
 
         return view('pengajuan.daftar-pengajuan', $data);
     }
 
-    function riwayatPengajuan()
+    // Tambahkan method ini di Controller riwayat pengajuan
+    public function detailPengajuan($id)
     {
-        $user = Auth::user();
+            $pengajuan = PengajuanSurat::with(['user', 'jenisSurat'])
+                ->where('id', $id)
+                ->where('user_id', Auth::id()) // Pastikan hanya user yang bersangkutan
+                ->firstOrFail();
+                // dd($pengajuan->data_pengajuan);
+            
+            // data_pengajuan sudah berupa array karena Laravel auto-casting untuk tipe JSON
+            $dataPengajuan = $pengajuan->data_pengajuan;
 
-        $riwayat = PengajuanSelesai::with(['pengajuan.jenisSurat'])
-            ->whereHas('pengajuan', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })
-            ->latest()
-            ->paginate(10);
+            $data = [
+                'title' => 'Detail Pengajuan',
+                'pengajuan' => $pengajuan,
+                'dataPengajuan' => $dataPengajuan
+            ];
+            
+            // Generate HTML content
+            return view('partials.detail-pengajuan-modal', $data)->render();
+    }
 
-        $data = [
+    public function riwayatPengajuan()
+    {
+        $riwayatSelesai = PengajuanSurat::where('user_id', Auth::id())
+            ->where('status', 'selesai')
+            ->with('jenisSurat')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10, ['*'], 'selesai');
+        
+        $riwayatDitolak = PengajuanSurat::where('user_id', Auth::id())
+            ->where('status', 'ditolak')
+            ->with('jenisSurat')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10, ['*'], 'ditolak');
+
+        $pengajuan = PengajuanSurat::with(['user', 'jenisSurat'])
+                ->where('user_id', Auth::id()) // Pastikan hanya user yang bersangkutan
+                ->firstOrFail();
+                // dd($pengajuan->data_pengajuan);
+            
+            // data_pengajuan sudah berupa array karena Laravel auto-casting untuk tipe JSON
+            $dataPengajuan = $pengajuan->data_pengajuan;
+
+         $data = [
             'title' => 'Riwayat Pengajuan Surat',
-            'riwayat' => $riwayat
+            'riwayatSelesai' => $riwayatSelesai,
+            'riwayatDitolak' => $riwayatDitolak,
+            'pengajuan' => $pengajuan,
+                'dataPengajuan' => $dataPengajuan
         ];
 
         return view('riwayat-pengajuan.index', $data);
@@ -50,7 +87,16 @@ class UserController extends Controller
 
     function downloadSurat($id)
     {
-        // dd($id);
+        // Cari notifikasi terkait pengajuan ini
+        $notifikasi = Notifikasi::where('pengajuan_surat_id', $id)->first();
+        
+        if ($notifikasi && !$notifikasi->sudah_dibaca_masyarakat) {
+            $notifikasi->update([
+                'sudah_dibaca_masyarakat' => true,
+                'dibaca_masyarakat_pada' => now(),
+            ]);
+        }
+
         $surat = PengajuanSelesai::findOrFail($id);
         $fileName = $surat->surat_diminta;
         $filePath = 'dokumen/surat-selesai/' . $fileName;

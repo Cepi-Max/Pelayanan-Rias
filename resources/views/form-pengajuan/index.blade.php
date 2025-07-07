@@ -16,19 +16,50 @@
                     @csrf
                     <input type="hidden" name="jenis_surat_id" value="{{ $jenisSurat->id }}">
 
+                    {{-- Ganti bagian @foreach Anda dengan ini --}}
+
+                    @php
+                        // Ambil data form fields dari model dan decode JSON-nya.
+                        // Lakukan ini di controller dan kirim ke view sebagai $formFields
+                        // Contoh di Controller: $formFields = json_decode($jenisSurat->form_fields, true);
+                    @endphp
+
                     @foreach ($formFields as $field)
                         <div>
                             <label for="{{ $field['name'] }}" class="block text-gray-700 font-semibold mb-1">
                                 {{ $field['label'] }}
                             </label>
 
+                            {{-- Kondisi 1: Jika tipenya 'textarea' --}}
                             @if ($field['type'] === 'textarea')
                                 <textarea name="{{ $field['name'] }}" id="{{ $field['name'] }}"
-                                    class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200" rows="4" required></textarea>
+                                    class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200"
+                                    rows="4" required>{{ old($field['name']) }}</textarea>
+
+                            {{-- Kondisi 2 (BARU): Jika tipenya 'select' --}}
+                            @elseif ($field['type'] === 'select')
+                                <select name="{{ $field['name'] }}" id="{{ $field['name'] }}"
+                                    class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200" required>
+                                    
+                                    {{-- Ambil string pilihan dan ubah menjadi array --}}
+                                    @php
+                                        $options = explode(',', $field['options'] ?? '');
+                                    @endphp
+
+                                    <option value="">-- Pilih {{ $field['label'] }} --</option>
+                                    @foreach ($options as $option)
+                                        @php $optionValue = trim($option); @endphp
+                                        <option value="{{ $optionValue }}" {{ old($field['name']) == $optionValue ? 'selected' : '' }}>
+                                            {{ $optionValue }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                            {{-- Kondisi 3 (Default): Untuk tipe lainnya (text, file, number, date) --}}
                             @else
                                 <input type="{{ $field['type'] }}" name="{{ $field['name'] }}" id="{{ $field['name'] }}"
                                     class="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200"
-                                    required>
+                                    value="{{ old($field['name']) }}" required>
                             @endif
                         </div>
                     @endforeach

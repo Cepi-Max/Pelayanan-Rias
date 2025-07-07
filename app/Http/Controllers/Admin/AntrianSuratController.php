@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Mail\NotifikasiPengajuanSurat;
 use App\Mail\NotifikasiPengajuanSuratSelesai;
+use App\Models\Notifikasi;
 use App\Models\PengajuanSelesai;
 use App\Models\PengajuanSurat;
 use Illuminate\Http\Request;
@@ -39,6 +40,17 @@ class AntrianSuratController extends Controller
     {
         $pengajuan = PengajuanSurat::with(['user', 'jenisSurat'])->findOrFail($id);
 
+        // Cari notifikasi terkait pengajuan ini
+        $notifikasi = Notifikasi::where('pengajuan_surat_id', $id)->first();
+
+        // Tandai notifikasi sebagai sudah dibaca operator jika belum
+        if ($notifikasi && !$notifikasi->sudah_dibaca_operator) {
+            $notifikasi->update([
+                'sudah_dibaca_operator' => true,
+                'dibaca_operator_pada' => now(),
+            ]);
+        }
+        
         $data = [
             'title' => 'Detail Pengajuan',
             'pengajuan' => $pengajuan
@@ -53,6 +65,8 @@ class AntrianSuratController extends Controller
             'status' => 'required|in:diproses,ditolak',
             'catatan' => 'nullable|string',
         ]);
+
+        $notifikasi = Notifikasi::where('pengajuan_surat_id', $id)->first();
 
         $pengajuan = PengajuanSurat::findOrFail($id);
         $pengajuan->status = $request->status;
@@ -69,6 +83,13 @@ class AntrianSuratController extends Controller
         } elseif ($request->status === 'ditolak') {
             $judul = 'Pengajuan Surat Ditolak';
             $pesan = $request->catatan ?: 'Pengajuan surat kamu ditolak. Silakan periksa kembali syarat yang dikirim.';
+            // Tandai notifikasi sebagai sudah dibaca masyarakat jika belum
+            if ($notifikasi && !$notifikasi->sudah_dibaca_masyarakat) {
+                $notifikasi->update([
+                    'sudah_dibaca_masyarakat' => true,
+                    'dibaca_masyarakat_pada' => now(),
+                ]);
+            }
         }
 
         // Kirim email ke pengaju
@@ -89,7 +110,6 @@ class AntrianSuratController extends Controller
         ]);
 
         $pengajuan = PengajuanSurat::findOrFail($id);
-        // dd('HAi');
 
         if ($request->hasFile('surat_diminta') && $request->file('surat_diminta')->isValid()) {
             $file = $request->file('surat_diminta'); 

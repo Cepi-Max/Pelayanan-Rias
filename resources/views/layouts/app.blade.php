@@ -12,14 +12,14 @@
      <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen">
     <!-- Navbar -->
     <header>
         @include('layouts.navbar')
     </header>
 
     <!-- Main Content -->
-    <main class="mx-auto w-[90%] pt-[6.5rem] md:pt-[7rem]">
+    <main class="mx-auto w-[90%] pt-[6.5rem] md:pt-[7rem] flex-grow">
         @yield('content')
     </main>
 
@@ -30,5 +30,6 @@
 
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
+
 
 </html>

@@ -32,6 +32,44 @@
     <!-- notifikasi mengambang -->
     @include('admin.layouts.notifikasi')
 
+    <script>
+        function toggleNotifikasi() {
+            const dropdown = document.getElementById('notifikasiDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        function tandaiBaca(notifikasiId) {
+            // AJAX request untuk menandai notifikasi sebagai sudah dibaca
+            fetch(`/admin/notifikasi/${notifikasiId}/baca`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Refresh halaman atau update UI
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        // Tutup dropdown ketika klik di luar
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('notifikasiDropdown');
+            const button = event.target.closest('button[onclick="toggleNotifikasi()"]');
+            
+            if (!button && !dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    </script>
+
 </body>
 
 </html>

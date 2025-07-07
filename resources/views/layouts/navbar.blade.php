@@ -15,13 +15,20 @@
 
             @auth
                 <a href="{{ route('daftar-pengajuan.index') }}"
-                    class="text-gray-700 hover:text-indigo-700 transition flex items-center space-x-1">
+                class="text-gray-700 hover:text-indigo-700 transition flex items-center space-x-1 relative">
                     <i class="fas fa-envelope-open-text"></i>
                     <span>Pengajuan Saya</span>
+                    
+                    <!-- Badge untuk notifikasi -->
+                    @if(isset($notifikasiUserBaru) && $notifikasiUserBaru > 0)
+                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                            {{ $notifikasiUserBaru > 99 ? '99+' : $notifikasiUserBaru }}
+                        </span>
+                    @endif
                 </a>
                 <a href="{{ route('riwayat-pengajuan.index') }}"
                     class="text-gray-700 hover:text-indigo-700 transition flex items-center space-x-1">
-                    <i class="fas fa-clock-rotate-left"></i>
+                    <i class="fas fa-history"></i>
                     <span>Riwayat</span>
                 </a>
                 <a href="{{ route('profile.edit') }}"
@@ -29,6 +36,25 @@
                     <i class="fas fa-user-circle"></i>
                     <span>Profil</span>
                 </a>
+
+                @php($role = Auth::user()->role)
+
+                @if ($role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}"
+                    class="text-blue-700 hover:text-indigo-700 transition flex items-center space-x-1"
+                    style="margin-left: 30px;">
+                    <i class="fas fa-home"></i>
+                    <span>Admin Dashboard</span>
+                    </a>
+
+                @elseif ($role === 'operator')
+                    <a href="{{ route('operator.dashboard') }}"
+                    class="text-blue-700 hover:text-indigo-700 transition flex items-center space-x-1"
+                    style="margin-left: 30px;">
+                    <i class="fas fa-home"></i>
+                    <span>Operator Dashboard</span>
+                    </a>
+                @endif
 
                 <form action="{{ route('logout') }}" method="POST" class="ml-4">
                     @csrf

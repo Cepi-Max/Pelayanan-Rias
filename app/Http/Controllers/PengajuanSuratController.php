@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\JenisSurat;
+use App\Models\Notifikasi;
 use App\Models\PengajuanSurat;
 use App\Models\User;
 use App\Notifications\PengajuanSuratBaru;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PengajuanSuratController extends Controller
 {
@@ -62,11 +64,22 @@ class PengajuanSuratController extends Controller
         
         // Membuat pengajuan surat baru
         $pengajuan = new PengajuanSurat();
-        $pengajuan->user_id = auth()->id();
+        $pengajuan->user_id = Auth::id();
         $pengajuan->jenis_surat_id = $request->jenis_surat_id;
         $pengajuan->data_pengajuan = $dataPengajuan;
         $pengajuan->status = 'pending';
         $pengajuan->save();
+
+        Notifikasi::create([
+            'pengaju_id' => Auth::id(),
+            'pengajuan_surat_id' => $pengajuan->id,
+            'jenis_surat_id' => $jenisSurat->id,
+            'judul' => "Pengajuan Baru: " . $jenisSurat->nama_jenis,
+            'pesan' => "Ada pengajuan surat baru dari masyarakat untuk jenis: " . $jenisSurat->nama_jenis,
+            'tipe' => 'info',
+            'sudah_dibaca_operator' => false,
+            'sudah_dibaca_masyarakat' => false,
+        ]);
 
         // Cari semua operator
         $operators = User::where('role', 'operator')->get();

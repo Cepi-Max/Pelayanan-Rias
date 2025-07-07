@@ -12,6 +12,8 @@ class PengajuanSurat extends Model
 
     protected $casts = [
         'data_pengajuan' => 'array',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function user()
@@ -21,8 +23,9 @@ class PengajuanSurat extends Model
 
     public function jenisSurat()
     {
-        return $this->belongsTo(JenisSurat::class);
+        return $this->belongsTo(JenisSurat::class, 'jenis_surat_id');
     }
 
 
 }
+

@@ -6,7 +6,9 @@
             <div class="w-8 h-8 bg-gray-100 rounded-md flex items-center justify-center text-gray-500">
                 <span class="material-icons text-sm">admin_panel_settings</span>
             </div>
-            <h2 class="ml-3 text-sm font-medium text-gray-700">Admin Panel</h2>
+                <h2 class="ml-3 text-sm font-medium text-gray-700">
+        {{ Auth::check() && Auth::user()->role === 'admin' ? 'Admin Panel' : (Auth::user()->role === 'operator' ? 'Operator Panel' : 'Panel') }}
+    </h2>
         </div>
     </div>
 
@@ -40,6 +42,7 @@
         <div class="mt-6 mb-1">
             <p class="px-3 text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Manajemen Surat</p>
             <ul>
+                @if(Auth::user() && Auth::user()->role === 'admin')
                 <li class="mb-1">
                     <a href="{{ route('admin.jenis-surat.index') }}"
                         class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 {{ request()->routeIs('admin.jenis-surat.*') ? 'bg-gray-100 text-gray-900' : '' }}">
@@ -47,6 +50,8 @@
                         Jenis Surat
                     </a>
                 </li>
+                @endif
+                @if(Auth::user() && Auth::user()->role === 'operator')
                 <li class="mb-1">
                     <a href="{{ route('admin.antrian.index') }}"
                         class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 {{ request()->routeIs('admin.antrian.*') ? 'bg-gray-100 text-gray-900' : '' }}">
@@ -54,11 +59,19 @@
                         Antrian
                     </a>
                 </li>
+                 @endif
+                <li class="mb-1">
+                    <a href="{{ route('admin.arsip.index') }}"
+                        class="flex items-center px-3 py-2.5 text-sm rounded-md font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 {{ request()->routeIs('admin.arsip.*') ? 'bg-gray-100 text-gray-900' : '' }}">
+                        <span class="material-icons mr-3 text-gray-500 text-base">archive</span>
+                        Arsip
+                    </a>
+                </li>
             </ul>
         </div>
 
         <!-- Settings Section -->
-        <div class="mt-6 mb-1">
+        {{-- <div class="mt-6 mb-1">
             <p class="px-3 text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Pengaturan</p>
             <ul>
                 <li class="mb-1">
@@ -77,7 +90,7 @@
                 </li>
             </ul>
         </div>
-    </nav>
+    </nav> --}}
 
     <!-- Sidebar Footer -->
     <div class="absolute bottom-0 left-0 right-0 border-t border-gray-100">

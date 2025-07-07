@@ -62,7 +62,7 @@
     @elseif ($pengajuan->status === 'diproses')
         <form action="{{ route('admin.antrian.surat-selesai', $pengajuan->id) }}" method="POST" enctype="multipart/form-data" class="mt-6 flex flex-col gap-4">
             @csrf
-            <label>jika surat yang diminta sudah selesai dibikin, silahkan kirim melalui form ini:</label>
+            <label>Apabila surat yang diminta telah selesai dibuat, mohon untuk mengunggahnya melalui formulir berikut:</label>
             <input type="file" name="surat_diminta">
             <button name="status" value="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
                 Kirim

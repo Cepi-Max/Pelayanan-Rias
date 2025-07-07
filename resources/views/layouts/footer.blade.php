@@ -3,7 +3,7 @@
 
         <!-- Logo dan Deskripsi -->
         <div>
-            <h2 class="text-2xl font-extrabold text-white mb-4">Desa Digital</h2>
+            <h2 class="text-2xl font-extrabold text-white mb-4">Desa Rias</h2>
             <p class="text-sm leading-relaxed">
                 Sistem Administrasi Desa yang Terintegrasi, Transparan, dan Mudah Diakses oleh Masyarakat.
             </p>
@@ -24,11 +24,11 @@
         <div>
             <h3 class="text-lg font-semibold text-white mb-3">Kontak</h3>
             <ul class="space-y-2 text-sm">
-                <li>Jl. Raya Desa No.123, Kecamatan Aman</li>
-                <li>Kabupaten Makmur</li>
-                <li>Email: <a href="mailto:admin@desadigital.id"
-                        class="hover:text-white transition">admin@desadigital.id</a></li>
-                <li>Telp: 0812-3456-7890</li>
+                <li>Jl. Raya Rias, Kecamatan Toboali</li>
+                <li>Kabupaten Bangka Selatan</li>
+                <li>Email: <a href="mailto:support@desa-rias.com"
+                        class="hover:text-white transition">support@desa-rias.com</a></li>
+                <li>Telp: 0834-3635-434</li>
             </ul>
         </div>
 
@@ -52,7 +52,7 @@
 
     <!-- Garis & Hak Cipta -->
     <div class="border-t border-gray-700 mt-10 pt-4 text-center text-sm text-gray-500">
-        &copy; 2025 Desa Digital. All rights reserved.
+        &copy; 2025 Desa Rias. All rights reserved.
     </div>
 </footer>
 
